@@ -16,4 +16,4 @@ host = redis
 port = 6379
 
 [celery]
-broker_url = amqp://myusername:mypassword@localhost
+broker_url = amqp://myusername:mypassword@rabbit
