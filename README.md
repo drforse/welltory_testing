@@ -35,7 +35,7 @@ broker_url = ex.: amqp://myusername:mypassword@localhost
 ### Django Admin
 Follow these steps to create django superuser:  
 - get welltory_data_analysis service container_id: `docker ps --all`  
-- run `docker exec <container_id> -it /bin/bash` to enter shell  
+- run `docker exec -it <container_id> /bin/bash` to enter shell  
 - run `python manage.py createsuperuser`  
 - follow manage.py instructions  
 - run `exit` to exit the container shell  
