@@ -43,4 +43,8 @@ Follow these steps to create django superuser:
 1. clone the repo  
 2. configure everything you need (check Configuration) (don't forget to add ip to allowed hosts)  
 3. run `docker-compose up -d`  
-4. create django superuser if needed (check Django Admin)  
+4. create django superuser if needed (check Django Admin) 
+### Tests
+run `pytest` to run auto-tests 
+### Additional info
+You can check info about endpoints on /swagger or /redoc  
