@@ -1,0 +1,68 @@
+version: '3'
+services:
+  welltory_data_analysis:
+    build: .
+    volumes:
+      - ./config.ini:/app/config.ini
+    depends_on:
+      db:
+        condition: service_healthy
+      celery:
+        condition: service_started
+      redis:
+        condition: service_started
+    restart: unless-stopped
+  db:
+    image: mysql:8.0
+    volumes:
+      - database:/var/lib/mysql
+    ports:
+      - ${MYSQL_PORT:-8880}:${MYSQL_PORT:-8880}
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?err}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:?err}
+      MYSQL_USER: ${MYSQL_USER:?err}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?err}
+      MYSQL_TCP_PORT: ${MYSQL_PORT:-8880}
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost", "--port", "8880",
+              "-u", "${MYSQL_USER}",
+              "--password=${MYSQL_PASSWORD}" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+  redis:
+    image: "redis:alpine"
+    restart: unless-stopped
+  rabbit:
+    hostname: rabbit
+    image: rabbitmq:3-management
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER:?err}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS:?err}
+    ports:
+      - "5672:5672"  
+      - "15672:15672"
+    restart: unless-stopped
+  celery:
+    build: .
+    command: celery -A welltory_data_analysis worker -l info
+    volumes:
+      - ./config.ini:/app/config.ini
+    depends_on:
+      - db
+      - rabbit
+      - redis
+    restart: unless-stopped
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - welltory_data_analysis
+    restart: unless-stopped
+volumes:
+  database: {}
