@@ -41,6 +41,6 @@ Follow these steps to create django superuser:
 - run `exit` to exit the container shell  
 ### Installation  
 1. clone the repo  
-2. configure everything you need (check Configuration)  
+2. configure everything you need (check Configuration) (don't forget to add ip to allowed hosts)  
 3. run `docker-compose up -d`  
 4. create django superuser if needed (check Django Admin)  
