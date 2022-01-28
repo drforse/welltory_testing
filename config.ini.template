@@ -1,18 +1,18 @@
 [server]
 secret_key = insecure-qwedda98wd8oijfJIHDF867&54$$HJ!sadg243d*asa9d-
 debug = 0
-allowed_hosts = 127.0.0.1 localhost [::1] example.com
+allowed_hosts = 127.0.0.1 localhost [::1] example.com nginx
 local_url = http://nginx
 
 [db]
 name = welltory_data_analysis
 user = user
 password = password
-host = localhost
+host = db
 port = 8880
 
 [redis]
-host = localhost
+host = redis
 port = 6379
 
 [celery]
