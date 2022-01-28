@@ -10,7 +10,7 @@ from service_data.views import UserWeightView, UserWeightsView
 
 
 @pytest.mark.django_db
-def test_weight_post_200():
+def test_weight_post_200(celery_session_worker):
     dt = b'{"day": "2021-05-09", "user_id": 2, "weight": 75.23, "unit": "kg"}'
     redis_app.set("user_weight_data:1", dt)
     factory = APIRequestFactory()
